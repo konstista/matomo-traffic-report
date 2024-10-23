@@ -13,7 +13,7 @@ from src.constants import SINGLE_PAGE_DATA_COLLECTION
 def load_page_data_by_month(start_date, end_date, page_urls):
     date_ranges = extract_date_ranges(start_date, end_date)
     
-    for page_url in page_urls:
+    for page_url in page_urls:       
         for range in date_ranges:
             # Check is record for the same period exists
             match_query = {
@@ -24,7 +24,7 @@ def load_page_data_by_month(start_date, end_date, page_urls):
             }
             matching_record = find_one_doc(SINGLE_PAGE_DATA_COLLECTION, match_query)
             if matching_record:
-                logger.info(f'Skipping processing for {page_url}, since existing record found in database.')
+                logger.info(f'Skipping processing for {page_url}...')
                 continue
             
             # Retrieve data from Matomo API
@@ -47,12 +47,12 @@ def create_monthly_record(page_url, range, api_response):
             "is_full_month": range["is_full_month"]
         },
         "page_data": {
-            "nb_visits": api_response["nb_visits"], # All page visits
-            "entry_nb_visits": api_response["entry_nb_visits"], # Page visits as entry page
-            "exit_nb_visits": api_response["exit_nb_visits"], # Page visits that left website
-            "avg_time_on_page": api_response["avg_time_on_page"], # Average time on page in seconds
-            "bounce_rate": api_response["bounce_rate"], # Bounce rate in percent
-            "exit_rate": api_response["exit_rate"], # Exit rate in percent
+            "nb_visits": api_response.get("nb_visits") or 0, # All page visits
+            "entry_nb_visits": api_response.get("entry_nb_visits") or 0, # Page visits as entry page
+            "exit_nb_visits": api_response.get("exit_nb_visits") or 0, # Page visits that left website
+            "avg_time_on_page": api_response.get("avg_time_on_page") or 0, # Average time on page in seconds
+            "bounce_rate": api_response.get("bounce_rate") or "N/A", # Bounce rate in percent
+            "exit_rate": api_response.get("exit_rate") or "N/A", # Exit rate in percent
         },
         "raw_api_response": api_response,
         "meta": {
