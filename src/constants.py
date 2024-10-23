@@ -1,0 +1,1 @@
+SINGLE_PAGE_DATA_COLLECTION = "single_page_traffic_records"
