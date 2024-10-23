@@ -32,7 +32,7 @@ def get_page_data(page_url, range):
     if response.status_code == 200:
         parsed_response = response.json()
         if not parsed_response:
-            logger.info('Missing data for {page_url}; {start_date} - {end_date}. Fall back to empty value...')
+            logger.info(f'Missing data for {page_url}; {start_date} - {end_date}. Fall back to empty value...')
             return {}
         else:
             return parsed_response[0]
