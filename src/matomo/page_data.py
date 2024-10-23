@@ -22,21 +22,23 @@ def get_page_data(page_url, range):
         'date': f'{start_date},{end_date}', 
         'method': 'Actions.getPageUrl',
         'token_auth': MATOMO_API_TOKEN,
-        'pageUrl': page_url
     }
 
-    # Make API request
     logger.info(f'Requesting data for {page_url}; {start_date} - {end_date}')
-    response = requests.get(API_URL, params=params)
-    # Check if request was successful
+
+    # Make API request (without trailing slash)
+    response = requests.get(API_URL, params={**params, 'pageUrl': page_url})
     if response.status_code == 200:
         parsed_response = response.json()
-        if not parsed_response:
-            logger.info(f'Missing data for {page_url}; {start_date} - {end_date}. Fall back to empty value...')
-            return {}
-        else:
+        if parsed_response:
             return parsed_response[0]
-    else:
-        logger.warning(f"Error while getting page data.")
-        logger.warning(f"Details: {response.status_code}, {response.text}")
-        return 
+
+    # Make API request (with trailing slash)
+    response = requests.get(API_URL, params={**params, 'pageUrl': page_url + "/"})
+    if response.status_code == 200:
+        parsed_response = response.json()
+        if parsed_response:
+            return parsed_response[0]
+
+    logger.warning(f"Failed to get page data for URL: {page_url}")
+    return {}
