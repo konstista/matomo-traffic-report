@@ -47,6 +47,7 @@ def create_monthly_record(page_url, range, api_response):
             "is_full_month": range["is_full_month"]
         },
         "page_data": {
+            "nb_hits": api_response.get("nb_hits") or 0, # All page page views
             "nb_visits": api_response.get("nb_visits") or 0, # All page visits
             "entry_nb_visits": api_response.get("entry_nb_visits") or 0, # Page visits as entry page
             "exit_nb_visits": api_response.get("exit_nb_visits") or 0, # Page visits that left website

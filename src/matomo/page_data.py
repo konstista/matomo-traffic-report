@@ -22,6 +22,7 @@ def get_page_data(page_url, range):
         'date': f'{start_date},{end_date}', 
         'method': 'Actions.getPageUrl',
         'token_auth': MATOMO_API_TOKEN,
+        'flat': 1
     }
 
     logger.info(f'Requesting data for {page_url}; {start_date} - {end_date}')

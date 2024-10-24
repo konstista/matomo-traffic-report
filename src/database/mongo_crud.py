@@ -21,3 +21,12 @@ def find_one_doc(collection_name, query, projection={"_id": 0}):
     db = client[MONGODB_DATABASE_NAME]
     
     return db[collection_name].find_one(query, projection)
+
+def find_docs(collection_name, query, projection={"_id": 0}):
+    MONGODB_DATABASE_NAME = os.environ.get("MONGODB_DATABASE_NAME")
+    
+    client = get_mongo_client()
+    db = client[MONGODB_DATABASE_NAME]
+    
+    documents = db[collection_name].find(query, projection)
+    return list(documents) if documents else []
