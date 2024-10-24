@@ -19,7 +19,7 @@ def generate_monthly_performance_csv(START_DATE, END_DATE, urls, reports_dir):
     documents = find_docs(SINGLE_PAGE_DATA_COLLECTION, query)
 
     metrics = {
-        "nb_hits": "nb_hits",
+        "nb_hits": "pageviews",
         "nb_visits": "total_visits",
         "entry_nb_visits": "entry_visits",
     }
