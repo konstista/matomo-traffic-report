@@ -4,7 +4,7 @@ import requests
 from datetime import datetime
 from loguru import logger
 
-def get_month_data(range):
+def get_pages_data_for_period(page_url, range, filter_limit = 100):
     SITE_ID = os.environ.get('MATOMO_SITE_ID')
     MATOMO_URL = os.environ.get('MATOMO_URL')
     MATOMO_API_TOKEN = os.environ.get('MATOMO_API_TOKEN')
@@ -20,12 +20,13 @@ def get_month_data(range):
         'format': 'JSON', 
         'period': 'range', 
         'date': f'{start_date},{end_date}', 
-        'method': 'VisitsSummary.get',
+        'method': 'Actions.getPageUrls',
         'token_auth': MATOMO_API_TOKEN,
+        'filter_limit': f"{filter_limit}",
         'flat': 1
     }
 
-    logger.info(f'Requesting data for date range: {start_date} - {end_date}')
+    logger.info(f'Requesting pages data for {page_url}; {start_date} - {end_date}')
 
     # Make API request (without trailing slash)
     response = requests.get(API_URL, params=params)
@@ -34,6 +35,5 @@ def get_month_data(range):
         if parsed_response:
             return parsed_response[0]
 
-
-    logger.warning(f"Failed to get monthly data for date range: {start_date} - {end_date}")
+    logger.warning(f"Failed to get page data for URL: {page_url}")
     return {}

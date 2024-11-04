@@ -10,14 +10,14 @@ from src.database.mongo_crud import insert_one_doc, find_one_doc
 from src.constants import MONTHLY_TRAFFIC_COLLECTION
 
 def load_website_traffic_per_month(START_DATE, END_DATE):
-    SIDE_ID = os.environ.get('MATOMO_SITE_ID')
+    SITE_ID = os.environ.get('MATOMO_SITE_ID')
     
     date_ranges = extract_date_ranges(START_DATE, END_DATE)
     
     for date_range in date_ranges:
         # Check is record for the same period exists
         match_query = {
-            "website_id": SIDE_ID,
+            "website_id": SITE_ID,
             "timeframe.start_date": date_range["start_date"],
             "timeframe.end_date": date_range["end_date"]
         }
@@ -29,7 +29,7 @@ def load_website_traffic_per_month(START_DATE, END_DATE):
         api_response = get_month_data(date_range)
         if api_response:
             # Generate Database Record
-            record = create_monthly_record(SIDE_ID, date_range, api_response)
+            record = create_monthly_record(SITE_ID, date_range, api_response)
             # Save record to database
             insert_one_doc(MONTHLY_TRAFFIC_COLLECTION, record)
 

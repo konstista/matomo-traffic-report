@@ -9,13 +9,13 @@ from src.utilities.datetime import extract_date_ranges, extract_month
 from src.constants import MONTHLY_TRAFFIC_COLLECTION
 
 def generate_website_monthly_dynamics_csv(START_DATE, END_DATE, reports_dir):
-    SIDE_ID = os.environ.get('MATOMO_SITE_ID')
+    SITE_ID = os.environ.get('MATOMO_SITE_ID')
     
     date_ranges = extract_date_ranges(START_DATE, END_DATE)
     year_months = sorted(set([extract_month(range["start_date"]) for range in date_ranges]))
     
     query = {
-        "website_id": SIDE_ID,
+        "website_id": SITE_ID,
         "timeframe.year_month": {"$in": year_months}
     }
     documents = find_docs(MONTHLY_TRAFFIC_COLLECTION, query)

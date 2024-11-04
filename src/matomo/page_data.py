@@ -5,7 +5,7 @@ from datetime import datetime
 from loguru import logger
 
 def get_page_data(page_url, range):
-    SIDE_ID = os.environ.get('MATOMO_SITE_ID')
+    SITE_ID = os.environ.get('MATOMO_SITE_ID')
     MATOMO_URL = os.environ.get('MATOMO_URL')
     MATOMO_API_TOKEN = os.environ.get('MATOMO_API_TOKEN')
     API_URL = f"{MATOMO_URL}/index.php"
@@ -16,7 +16,7 @@ def get_page_data(page_url, range):
 
     params = {
         'module': 'API', 
-        'idSite': SIDE_ID,
+        'idSite': SITE_ID,
         'format': 'JSON', 
         'period': 'range', 
         'date': f'{start_date},{end_date}', 
