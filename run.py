@@ -6,6 +6,8 @@ from src.scripts.load_page_data_by_month import load_page_data_by_month
 from src.scripts.generate_monthly_performance_csv import generate_monthly_performance_csv
 from src.scripts.load_website_traffic_per_month import load_website_traffic_per_month
 from src.scripts.generate_website_monthly_dynamics_csv import generate_website_monthly_dynamics_csv
+from src.scripts.load_top_pages_for_period import load_top_pages_for_period
+from src.scripts.generate_top_pages_for_period_csv import generate_top_pages_for_period_csv
 
 def generate_page_monthly(START_DATE, END_DATE):
     PAGES_FILE_PATH = "./data/pages.txt"
@@ -28,8 +30,18 @@ def generate_website_monthly(START_DATE, END_DATE):
     # Fetch website data month by month and save to database
     load_website_traffic_per_month(START_DATE, END_DATE)
     
-    # Load documents from
+    # Load documents from database and create csv
     generate_website_monthly_dynamics_csv(START_DATE, END_DATE, REPORT_DIR)
+
+
+def generate_pages_for_period(START_DATE, END_DATE):
+    REPORT_DIR = "./reports/pages_for_range"
+    
+    # Fetch website data for period and save to database.
+    # load_top_pages_for_period(START_DATE, END_DATE)
+
+    # Load documents from database and create csv
+    generate_top_pages_for_period_csv(START_DATE, END_DATE, REPORT_DIR)
 
 if __name__ == '__main__':
     load_dotenv()
@@ -41,4 +53,7 @@ if __name__ == '__main__':
     # generate_page_monthly(START_DATE, END_DATE)
     
     # Generate report for a given date range that would contain total website traffic stats
-    generate_website_monthly(START_DATE, END_DATE)
+    # generate_website_monthly(START_DATE, END_DATE)
+    
+    # Generate report for a given date range that shows most visited pages with its stats
+    generate_pages_for_period(START_DATE, END_DATE)

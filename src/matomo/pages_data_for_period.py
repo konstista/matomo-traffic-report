@@ -4,15 +4,15 @@ import requests
 from datetime import datetime
 from loguru import logger
 
-def get_pages_data_for_period(page_url, range, filter_limit = 100):
+def get_pages_data_for_period(start_date, end_date, filter_limit = 100):
     SITE_ID = os.environ.get('MATOMO_SITE_ID')
     MATOMO_URL = os.environ.get('MATOMO_URL')
     MATOMO_API_TOKEN = os.environ.get('MATOMO_API_TOKEN')
     API_URL = f"{MATOMO_URL}/index.php"
     
     # Format dates
-    start_date = datetime.strptime(range["start_date"], '%Y-%m-%d').strftime('%Y-%m-%d')
-    end_date = datetime.strptime(range["end_date"], '%Y-%m-%d').strftime('%Y-%m-%d')
+    start_date = datetime.strptime(start_date, '%Y-%m-%d').strftime('%Y-%m-%d')
+    end_date = datetime.strptime(end_date, '%Y-%m-%d').strftime('%Y-%m-%d')
 
     params = {
         'module': 'API', 
@@ -26,14 +26,13 @@ def get_pages_data_for_period(page_url, range, filter_limit = 100):
         'flat': 1
     }
 
-    logger.info(f'Requesting pages data for {page_url}; {start_date} - {end_date}')
+    logger.info(f'Requesting top pages data for {start_date} - {end_date}')
 
     # Make API request (without trailing slash)
     response = requests.get(API_URL, params=params)
     if response.status_code == 200:
         parsed_response = response.json()
-        if parsed_response:
-            return parsed_response[0]
+        return parsed_response
 
-    logger.warning(f"Failed to get page data for URL: {page_url}")
+    logger.warning(f"Failed to get top pages data for {start_date} - {end_date}")
     return {}
