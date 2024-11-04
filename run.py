@@ -38,7 +38,7 @@ def generate_pages_for_period(START_DATE, END_DATE):
     REPORT_DIR = "./reports/pages_for_range"
     
     # Fetch website data for period and save to database.
-    # load_top_pages_for_period(START_DATE, END_DATE)
+    load_top_pages_for_period(START_DATE, END_DATE)
 
     # Load documents from database and create csv
     generate_top_pages_for_period_csv(START_DATE, END_DATE, REPORT_DIR)

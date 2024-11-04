@@ -4,7 +4,7 @@ import requests
 from datetime import datetime
 from loguru import logger
 
-def get_pages_data_for_period(start_date, end_date, filter_limit = 100):
+def get_pages_data_for_period(start_date, end_date, filter_limit = 200):
     SITE_ID = os.environ.get('MATOMO_SITE_ID')
     MATOMO_URL = os.environ.get('MATOMO_URL')
     MATOMO_API_TOKEN = os.environ.get('MATOMO_API_TOKEN')
@@ -23,7 +23,8 @@ def get_pages_data_for_period(start_date, end_date, filter_limit = 100):
         'method': 'Actions.getPageUrls',
         'token_auth': MATOMO_API_TOKEN,
         'filter_limit': f"{filter_limit}",
-        'flat': 1
+        'flat': 1,
+        'showtitle': 1
     }
 
     logger.info(f'Requesting top pages data for {start_date} - {end_date}')
